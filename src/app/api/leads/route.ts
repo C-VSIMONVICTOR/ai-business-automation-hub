@@ -3,6 +3,27 @@ import { validateLead } from '@/lib/lead-validation';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { qualifyLead } from '@/lib/ai-qualification';
 
+export async function GET() {
+  try {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from('leads')
+      .select('id,name,email,company,message,source,status,ai_score,ai_temperature,ai_category,ai_summary,ai_recommended_action,ai_suggested_reply,created_at,updated_at')
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    if (error) {
+      console.error('Lead fetch failed:', error.message);
+      return NextResponse.json({ ok: false, error: 'Unable to load leads.' }, { status: 502 });
+    }
+
+    return NextResponse.json({ ok: true, leads: data ?? [] }, { status: 200 });
+  } catch (error) {
+    console.error('Lead GET failed:', error);
+    return NextResponse.json({ ok: false, error: 'Server configuration is incomplete.' }, { status: 500 });
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body: unknown = await request.json();
