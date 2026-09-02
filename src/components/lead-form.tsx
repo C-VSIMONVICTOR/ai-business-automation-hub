@@ -8,10 +8,11 @@ export default function LeadForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setBusy(true);
     setResult('');
-    const form = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(form.entries());
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
 
     try {
       const response = await fetch('/api/leads', {
@@ -21,7 +22,7 @@ export default function LeadForm() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.errors?.join(' ') || data.error || 'Unable to create lead.');
-      event.currentTarget.reset();
+      form.reset();
       setResult(`Lead qualified: ${data.lead.ai_temperature} (${data.lead.ai_score}/100)`);
     } catch (error) {
       setResult(error instanceof Error ? error.message : 'Something went wrong.');
