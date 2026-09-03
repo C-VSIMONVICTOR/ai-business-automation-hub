@@ -2,6 +2,10 @@
 
 A production-oriented AI lead automation platform for capturing, validating, analyzing, scoring, storing, and responding to business leads.
 
+## Live Demo
+
+🚀 **AI Business Automation Hub:** https://ai-business-automation-hub-nu.vercel.app/
+
 ## Goal
 
 This is a real working showcase project, not a mockup. The system is designed to demonstrate production practices used in AI automation projects: API/webhook integration, LLM processing, structured outputs, persistence, validation, error handling, testing, deployment, and workflow orchestration.
